@@ -63,7 +63,16 @@ export default {
       // 校验整个表单的规则
       this.$refs.myForm.validate(function (isOk) {
         if (isOk) {
-          console.log('校验成功')
+          this.axios({
+            method: 'post',
+            url: '/authorizations',
+            data: this.loginForm
+          }).then(result => {
+            // 将后台返回的token令牌存储到前端的缓存中
+            window.localStorage.setItem('user-token', result.data.data.token)
+          }).catch(error => {
+            console.log(error.message)
+          })
         }
       })
     }
